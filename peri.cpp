@@ -6,136 +6,140 @@ using namespace std;
 
 const int SIZE = 3;
 
-bool readSquare(int square[SIZE][SIZE], string inputFileName)
-{
-	//create object to read file
-	fstream input;
-	bool open_state;
+bool readSquare(int square[SIZE][SIZE], string inputFileName) {
+  // create object to read file
+  fstream input;
+  bool open_state;
 
-	//open file
-	input.open(inputFileName.c_str());
-	if (input.is_open() == true)
-		open_state = true;
-	else open_state = false;
+  // open file
+  input.open(inputFileName.c_str());
 
-	for (int x = 1; x <= 9; x++)
-	{
-		for (int y = 1; y <= 9; y++)
-		{
-			input >> square[x][y];
-		}
-	}
-	input.close();
+  if (input.is_open() == true) {
+    open_state = true;
+  } else {
+    open_state = false;
+  }
 
-	if (open_state = true)
-		return true;
-	else return false;
+  for (int x = 1; x <= 9; x++) {
+    for (int y = 1; y <= 9; y++) {
+      input >> square[x][y];
+    }
+  }
+
+  input.close();
+
+  if (open_state == true) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
-void printSquare(int square[SIZE][SIZE])
-{
-	cout << "Magic square" << endl;
+void printSquare(int square[SIZE][SIZE]) {
+  cout << "Magic square" << endl;
 
-	// Print out the Magic Square
-	for (int x = 1; x <= 3; x++)
-	{
-		for (int y = 1; y <= 3; y++)
-		{
-			if (square[x][y] < 10)
-				cout << " ";
-			cout << square[x][y] << " ";
-		}
-		cout << endl;
-	}
+  // Print out the Magic Square
+  for (int x = 1; x <= 3; x++) {
+    for (int y = 1; y <= 3; y++) {
+      if (square[x][y] < 10) {
+        cout << " ";
+        cout << square[x][y] << " ";
+      }
+    }
+
+    cout << endl;
+  }
 }
 
-bool validateSquare(int square[SIZE][SIZE])
-{
-	int Row_Total = 0, Total;
-	bool Square = true;
-	// Get value for top row
-	for (int x = 1; x <= 3; x++)
-		Row_Total += square[1][x];
+bool validateSquare(int square[SIZE][SIZE]) {
+  int Row_Total = 0;
+  int Total;
 
-	// Read  each row and compare with top row value
-	for (int x = 1; x <= 3; x++)
-	{
-		Total = 0; // Reset variable for next row
-		for (int y = 1; y <= 3; y++)
-		{
-			Total += square[x][y];
-		}
-		if (Total != Row_Total)
-			Square = false;
-	}
+  bool Square = true;
+  // Get value for top row
 
-	// Read  each column and compare with top row value
-	for (int y = 1; y <= 3; y++)
-	{
-		Total = 0; // Reset variable for next column
-		for (int x = 1; x <= 3; x++)
-		{
-			Total += square[x][y];
-		}
-		if (Total != Row_Total)
-			Square = false;
-	}
+  // I don't even know if this for loop is supposed to be closed here, because
+  // you didn't have closing brackets at line 72 and 74 for the for loop.
+  for (int x = 1; x <= 3; x++) {
+    Row_Total += square[1][x];
+  }
 
-	Total = 0; // Reset variable
+  // Read  each row and compare with top row value
+  for (int x = 1; x <= 3; x++) {
+    Total = 0;  // Reset variable for next row
 
-			   // Read diagonal top left to bottom right
-	for (int x = 1; x <= 3; x++)
-	{
-		Total += square[x][x];
-	}
-	if (Total != Row_Total)
-		Square = false;
+    for (int y = 1; y <= 3; y++) {
+      Total += square[x][y];
+    }
 
-	// Read diagonal top right to bottom left
+    if (Total != Row_Total) {
+      Square = false;
+    }
+  }
 
-	int y = 1;
-	Total = 0; // Reset variable
-	for (int x = 3; x > 0; x--)
-	{
-		Total += square[y][x];
-		y++;
-	}
-	if (Total != Row_Total)
-		Square = false;
+  // Read  each column and compare with top row value
+  for (int y = 1; y <= 3; y++) {
+    Total = 0;  // Reset variable for next column
+    for (int x = 1; x <= 3; x++) {
+      Total += square[x][y];
+    }
 
-	if (Square == true)
-	{
-		cout << endl << "Valid magic square" << endl;
-		return true;
-	}
-	else
-	{
-		cout << endl << "Invalid magic square" << endl;
-		return false;
-	}
+    if (Total != Row_Total) {
+      Square = false;
+    }
+  }
+
+  Total = 0;  // Reset variable
+
+  // Read diagonal top left to bottom right
+  for (int x = 1; x <= 3; x++) {
+    Total += square[x][x];
+  }
+
+  if (Total != Row_Total) {
+    Square = false;
+  }
+
+  // Read diagonal top right to bottom left
+
+  int y = 1;
+  Total = 0;  // Reset variable
+
+  for (int x = 3; x > 0; x--) {
+    Total += square[y][x];
+    y++;
+  }
+
+  if (Total != Row_Total) {
+    Square = false;
+  }
+
+  if (Square == true) {
+    cout << endl << "Valid magic square" << endl;
+    return true;
+  } else {
+    cout << endl << "Invalid magic square" << endl;
+    return false;
+  }
 }
 
 // main function
-int main()
-{
-	int square[SIZE][SIZE];
-	string inputFileName;
-	getline(cin, inputFileName);
-	//call function to open file and load matrix array with matrix found in file
-	bool matrixSize = readSquare(square, inputFileName);
+int main() {
+  int square[SIZE][SIZE];
+  string inputFileName;
+  getline(cin, inputFileName);
+  // call function to open file and load matrix array with matrix found in file
+  bool matrixSize = readSquare(square, inputFileName);
 
-	//call function to output
-	if (matrixSize == true)
-	{
-		printSquare(square);
+  // call function to output
+  if (matrixSize == true) {
+    printSquare(square);
 
-		//call function to verify if square is a magic square
-		validateSquare(square);
-	}
-	else
-	{
-		cout << "File \"" << inputFileName << "\" could not be opened" << endl;
-	}
+    // call function to verify if square is a magic square
+    validateSquare(square);
+  } else {
+    cout << "File \"" << inputFileName << "\" could not be opened" << endl;
+  }
 
-	return 0;
+  return 0;
 }
